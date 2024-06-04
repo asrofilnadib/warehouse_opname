@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\TransaksiBarang;
 use App\Models\Barang;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiBarangController extends Controller
 {
@@ -40,6 +42,7 @@ class TransaksiBarangController extends Controller
         }
 
         $data = new TransaksiBarang();
+        $data->user_id = Auth::user()->id;
         $data->id_barang = $request->id_barang;
         $data->jenis = $request->jenis;
         $data->qty = $request->qty;
@@ -85,18 +88,20 @@ class TransaksiBarangController extends Controller
      */
     public function update(Request $request)
     {
-        $data = TransaksiBarang::find($request->id);
+        $data = TransaksiBarang::find($request)->first();
+//        dd($data);
+        $data->user_id = Auth::user()->id;
         $data->id_barang = $request->id_barang;
         $data->jenis = $request->jenis;
         $data->qty = $request->qty;
         if($file = $request->file('foto')){
-
                 $nama_file = md5_file($file->getRealPath()) ."_".$file->getClientOriginalName();
                 $path = 'file/transaksi_barang';
                 $file->move($path,$nama_file);
                 $data->foto = $nama_file;
         }
-        $data->tanggal_transaksi = $request->tanggal_transaksi;
+        $data->tanggal_transaksi = Carbon::parse($request->tanggal_transaksi)->toDateTimeString();
+        $data->updated_at = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
         $data->save();
         return redirect()->route('transaksi_barang')->with('success', "Data TransaksiBarang Berhasil Diupdate !");
     }
@@ -111,8 +116,8 @@ class TransaksiBarangController extends Controller
             unlink("file/transaksi_barang/" . $transaksi_barang->foto);
             $transaksi_barang->delete();
             return redirect()->route('transaksi_barang')->with('success', "Data transaksi_barang Berhasil Di Hapus !");
-        }catch(\Throwable){
-            return redirect()->route('transaksi_barang')->with('error', $e);
+        }catch(\Exception $e){
+            return redirect()->route('transaksi_barang')->with('error', $e->getMessage());
         }
     }
 }

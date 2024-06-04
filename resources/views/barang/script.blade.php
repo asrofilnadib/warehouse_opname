@@ -19,7 +19,7 @@
       $('#table_1').DataTable();
       $('#table').DataTable();
       $('.hapus').on('click', function (e) {
- 
+
         e.preventDefault();
         const href = $(this).attr('href');
 
@@ -50,11 +50,11 @@
                 console.log(data);
                 $('#id_barang').val(data.data.id);
                 $('#nama_barang').val(data.data.nama_barang);
-                $('#nama_konversi').val(data.data.nama_konversi);
+                $('#jenis_barang').val(data.data.jenis_barang);
                 $('#id_satuan').val(data.data.id_satuan);
                 $('#stock').val(data.data.stock);
                 $('#editData').modal('toggle');
-              }         
+              }
           });
       })
 

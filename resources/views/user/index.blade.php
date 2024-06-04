@@ -1,3 +1,4 @@
+{{--@dd()--}}
 @include('template.header')
 @include('template.navbar')
     <div class="content-wrap">
@@ -39,9 +40,9 @@
                                 <thead>
                                     <tr>
                                         <th>Nama User</th>
-                                        <th>Nama Konversi</th>
-                                        <th>Nilai Konversi</th>
-                                        <th>Stock</th>
+                                        <th>Alamat</th>
+                                        <th>Email</th>
+                                        <th>No Telp</th>
                                         <th>Role</th>
                                         <th>Action</th>
                                     </tr>
@@ -55,8 +56,10 @@
                                         <td>{{ $d->no_telp }}</td>
                                         <td>{{ $d->role }}</td>
                                         <td style="text-align:left;">
+                                          @if ($d->role !== 'admin')
                                             <a href="{{ route('user.destroy', $d->id) }}" class="btn btn-danger hapus">Hapus</a>
                                             <button class="btn btn-warning edit" data-id="{{ $d->id }}"> Edit </button>
+                                          @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -75,6 +78,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -84,7 +88,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('user.add') }}" method="POST"  enctype="multipart/form-data"> 
+            <form action="{{ route('user.add') }}" method="POST"  enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
               <div class="form-group">
@@ -109,7 +113,7 @@
               <div class="form-group">
                 <input type="number" name="no_telp" class="form-control" placeholder="Masukan no telp user" required>
               </div>
-              
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -130,9 +134,9 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('user.update') }}" method="POST"  enctype="multipart/form-data"> 
+            <form action="{{ route('user.update', $user->firstWhere('id')) }}" method="POST"  enctype="multipart/form-data">
             @csrf
-            <input type="hidden" id="id_mobil" name="id">
+            <input type="hidden" id="id_user" name="id">
             <div class="modal-body">
               <div class="form-group">
                 <input id="name" type="text" name="name" class="form-control" placeholder="Masukan Nama User" required>
@@ -165,7 +169,5 @@
           </div>
         </div>
       </div>
-
-    
-@extends('user.script')                    
+@extends('user.script')
 @extends('template.footer')

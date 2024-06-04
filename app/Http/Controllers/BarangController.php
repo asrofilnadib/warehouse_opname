@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Satuan;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class BarangController extends Controller
 {
@@ -32,8 +35,9 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $data = new Barang();
+        $data->user_id = Auth::user()->id;
         $data->nama_barang = $request->nama_barang;
-        $data->nama_konversi = $request->nama_konversi;
+        $data->jenis_barang = $request->jenis_barang;
         if($file = $request->file('foto')){
 
                 $nama_file = md5_file($file->getRealPath()) ."_".$file->getClientOriginalName();
@@ -77,11 +81,12 @@ class BarangController extends Controller
      */
     public function update(Request $request)
     {
-        $data = Barang::find($request->id);
+        $data = Barang::find($request)->first();
+//        dd($request);
+        $data->user_id = Auth::user()->id;
         $data->nama_barang = $request->nama_barang;
-        $data->nama_konversi = $request->nama_konversi;
+        $data->jenis_barang = $request->jenis_barang;
         if($file = $request->file('foto')){
-
                 $nama_file = md5_file($file->getRealPath()) ."_".$file->getClientOriginalName();
                 $path = 'file/barang';
                 $file->move($path,$nama_file);
@@ -89,6 +94,7 @@ class BarangController extends Controller
         }
         $data->stock = $request->stock;
         $data->id_satuan = $request->id_satuan;
+        $data->updated_at = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
         $data->save();
         return redirect()->route('barang')->with('success', "Data Barang Berhasil Diupdate !");
     }

@@ -41,6 +41,7 @@ Route::get('/transaksi_barang/{id}/destroy',[TransaksiBarangController::class,'d
 
 Route::get('/report',[ReportController::class, 'index'])->name('report');
 Route::post('/report/filter',[ReportController::class, 'filter'])->name('report.filter');
+Route::post('/report/send', [ReportController::class, 'mail'])->name('report.mail');
 Route::post('/report/detail',[ReportController::class, 'detail'])->name('report.detail');
 Route::post('/report/store',[ReportController::class, 'store'])->name('report.add');
 Route::post('/report/update',[ReportController::class, 'update'])->name('report.update');
@@ -50,11 +51,11 @@ Route::get('/user',[UserController::class, 'index'])->name('user');
 Route::post('/user/filter',[UserController::class, 'filter'])->name('user.filter');
 Route::post('/user/detail',[UserController::class, 'detail'])->name('user.detail');
 Route::post('/user/store',[UserController::class, 'store'])->name('user.add');
-Route::post('/user/update',[UserController::class, 'update'])->name('user.update');
+Route::post('/user/update/{id}',[UserController::class, 'update'])->name('user.update');
 Route::get('/user/{id}/destroy',[UserController::class,'destroy'])->name('user.destroy');
 
 Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/', function () {   
+Route::get('/', function () {
     return view('login');
 });

@@ -29,15 +29,22 @@
     <link href="{{ URL::asset('assets/css/lib/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/lib/helper.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('assets/css/style.css')}}" rel="stylesheet">
-    
+
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts/dist/apexcharts.css">
+
     @if(isset($periode))
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
     @else
         <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     @endif
-    
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 </head>
 
 <body>
