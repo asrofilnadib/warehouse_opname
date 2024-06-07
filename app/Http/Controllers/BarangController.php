@@ -47,6 +47,7 @@ class BarangController extends Controller
         }
         $data->stock = $request->stock;
         $data->id_satuan = $request->id_satuan;
+        $data->expired_at = $request->expired_at;
         $data->save();
         return redirect()->route('barang')->with('success', "Data Barang Berhasil Ditambahkan !");
     }
@@ -94,6 +95,7 @@ class BarangController extends Controller
         }
         $data->stock = $request->stock;
         $data->id_satuan = $request->id_satuan;
+        $data->expired_at = $request->expired_at;
         $data->updated_at = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
         $data->save();
         return redirect()->route('barang')->with('success', "Data Barang Berhasil Diupdate !");

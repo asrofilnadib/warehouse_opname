@@ -50,7 +50,7 @@
                 <tr>
                   <td>{{ $d->barang_id }}</td>
                   <td>{{ $d->nama_barang  }}</td>
-                  <td>{{ $d->nama_konversi }}</td>
+                  <td>{{ $d->jenis_barang }}</td>
                   <td>{{ $d->name_satuan . " / 1 " . $d->name_satuan}}</td>
                   <td>{{ $d->jenis}}</td>
                   <td>{{ $d->tanggal_transaksi }}</td>

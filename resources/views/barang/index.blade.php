@@ -43,7 +43,8 @@
                 <th>Jenis Barang</th>
                 <th>Nilai Konversi</th>
                 <th>Stock</th>
-                <th>Creted By</th>
+                <th>Created By</th>
+                <th>Expired At</th>
                 <th>Action</th>
               </tr>
               </thead>
@@ -56,6 +57,7 @@
                     <td>{{ $d->satuan->name . " / " . " 1 " . $d->satuan->name }}</td>
                     <td>{{ $d->stock }}</td>
                     <td>{{ $d->user->name }}</td>
+                    <td>{{ $d->expired_at }}</td>
                     <td style="text-align:left;">
                       <a href="{{ route('barang.destroy', $d->id) }}" class="btn btn-danger hapus">Hapus</a>
                       <button class="btn btn-warning edit" data-id="{{ $d->id }}"> Edit</button>
@@ -96,7 +98,7 @@
             <input type="text" name="nama_barang" class="form-control" placeholder="Masukan Nama Barang" required>
           </div>
           <div class="form-group">
-            <input type="text" name="nama_konversi" class="form-control" placeholder="Jenis Barang" required>
+            <input type="text" name="jenis_barang" class="form-control" placeholder="Jenis Barang" required>
           </div>
           <div class="form-group">
             <select name="id_satuan" id="id_satuan" class="form-control">
@@ -109,7 +111,10 @@
           <div class="form-group">
             <input type="number" name="stock" class="form-control" placeholder="Masukan stock barang" required>
           </div>
-
+          <div class="form-group">
+            <input type="date" name="expired_at" class="form-control"
+                   placeholder="Masukan tanggal kadaluarsa barang" required>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -152,6 +157,10 @@
           <div class="form-group">
             <input id="stock" type="number" name="stock" class="form-control" placeholder="Masukan stock barang"
                    required>
+          </div>
+          <div class="form-group">
+            <input type="date" name="expired_at" id="expired_at" class="form-control"
+                   placeholder="Masukan tanggal kadaluarsa barang" required>
           </div>
         </div>
         <div class="modal-footer">

@@ -39,7 +39,7 @@ class ReportController extends Controller
     }
 
     $raw = "
-            SELECT barang.id as barang_id,barang.nama_konversi,satuan.name as name_satuan,
+            SELECT barang.id as barang_id,barang.jenis_barang,satuan.name as name_satuan,
             barang.nama_barang, transaksi_barang.jenis,SUM(transaksi_barang.qty) as jumlah
             FROM barang
             LEFT JOIN transaksi_barang on barang.id = transaksi_barang.id_barang
@@ -54,13 +54,13 @@ class ReportController extends Controller
     }
 
     $raw = $raw . "AND transaksi_barang.tanggal_transaksi BETWEEN '$from' AND '$to'
-        GROUP BY transaksi_barang.jenis,barang.id,barang.nama_barang,barang.nama_konversi,satuan.name
+        GROUP BY transaksi_barang.jenis,barang.id,barang.nama_barang,barang.jenis_barang,satuan.name
         ";
 
     $data = DB::select($raw);
 
     $raw2 = "
-            SELECT barang.id as barang_id,barang.nama_konversi,satuan.name as name_satuan,
+            SELECT barang.id as barang_id,barang.jenis_barang,satuan.name as name_satuan,
             transaksi_barang.tanggal_transaksi,
             barang.nama_barang, transaksi_barang.jenis
             FROM barang
@@ -110,7 +110,7 @@ class ReportController extends Controller
   {
     $data = new Barang();
     $data->nama_barang = $request->nama_barang;
-    $data->nama_konversi = $request->nama_konversi;
+    $data->jenis_barang = $request->jenis_barang;
     if ($file = $request->file('foto')) {
 
       $nama_file = md5_file($file->getRealPath()) . "_" . $file->getClientOriginalName();
@@ -156,7 +156,7 @@ class ReportController extends Controller
   {
     $data = Barang::find($request->id);
     $data->nama_barang = $request->nama_barang;
-    $data->nama_konversi = $request->nama_konversi;
+    $data->jenis_barang = $request->jenis_barang;
     if ($file = $request->file('foto')) {
 
       $nama_file = md5_file($file->getRealPath()) . "_" . $file->getClientOriginalName();

@@ -51,7 +51,8 @@
                 $('#id_barang').val(data.data.id);
                 $('#nama_barang').val(data.data.nama_barang);
                 $('#jenis_barang').val(data.data.jenis_barang);
-                $('#id_satuan').val(data.data.id_satuan);
+                $('#expired_at').val(data.data.expired_at);
+                $('#id_satuan').val(data.data.satuan.name);
                 $('#stock').val(data.data.stock);
                 $('#editData').modal('toggle');
               }
