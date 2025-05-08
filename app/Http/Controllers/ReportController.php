@@ -38,47 +38,48 @@ class ReportController extends Controller
       return redirect()->route('report')->with('error', "Tanggal Awal tidak boleh lebih dari tanggal akhir");
     }
 
-    $raw = "
-            SELECT barang.id as barang_id,barang.jenis_barang,satuan.name as name_satuan,
-            barang.nama_barang, transaksi_barang.jenis,SUM(transaksi_barang.qty) as jumlah
-            FROM barang
-            LEFT JOIN transaksi_barang on barang.id = transaksi_barang.id_barang
-            LEFT JOIN satuan on barang.id_satuan = satuan.id
-            WHERE barang.id = '$id_barang'
-        ";
+    $query = Barang::select(
+      'barang.id as barang_id',
+      'barang.jenis_barang',
+      'satuan.name as name_satuan',
+      'barang.nama_barang',
+      'transaksi_barang.jenis',
+      DB::raw('SUM(transaksi_barang.qty) as jumlah')
+    )
+      ->leftJoin('transaksi_barang', 'barang.id', '=', 'transaksi_barang.id_barang')
+      ->leftJoin('satuan', 'barang.id_satuan', '=', 'satuan.id')
+      ->where('barang.id', $id_barang);
 
     if ($filter == "barang_masuk") {
-      $raw = $raw . " AND transaksi_barang.jenis = 'masuk' ";
+      $query->where('transaksi_barang.jenis', 'masuk');
     } else if ($filter == "barang_keluar") {
-      $raw = $raw . " AND transaksi_barang.jenis = 'keluar' ";
+      $query->where('transaksi_barang.jenis', 'keluar');
     }
 
-    $raw = $raw . "AND transaksi_barang.tanggal_transaksi BETWEEN '$from' AND '$to'
-        GROUP BY transaksi_barang.jenis,barang.id,barang.nama_barang,barang.jenis_barang,satuan.name
-        ";
+    $query->whereBetween('transaksi_barang.tanggal_transaksi', [$from, $to])
+      ->groupBy('transaksi_barang.jenis', 'barang.id', 'barang.nama_barang', 'barang.jenis_barang', 'satuan.name');
+    $data = $query->get();
 
-    $data = DB::select($raw);
-
-    $raw2 = "
-            SELECT barang.id as barang_id,barang.jenis_barang,satuan.name as name_satuan,
-            transaksi_barang.tanggal_transaksi,
-            barang.nama_barang, transaksi_barang.jenis
-            FROM barang
-            LEFT JOIN transaksi_barang on barang.id = transaksi_barang.id_barang
-            LEFT JOIN satuan on barang.id_satuan = satuan.id
-            WHERE barang.id = '$id_barang'
-        ";
+    $query2 = Barang::select(
+      'barang.id as barang_id',
+      'barang.jenis_barang',
+      'satuan.name as name_satuan',
+      'transaksi_barang.tanggal_transaksi',
+      'barang.nama_barang',
+      'transaksi_barang.jenis'
+    )
+      ->leftJoin('transaksi_barang', 'barang.id', '=', 'transaksi_barang.id_barang')
+      ->leftJoin('satuan', 'barang.id_satuan', '=', 'satuan.id')
+      ->where('barang.id', $id_barang);
 
     if ($filter == "barang_masuk") {
-      $raw2 = $raw2 . " AND transaksi_barang.jenis = 'masuk' ";
+      $query2->where('transaksi_barang.jenis', 'masuk');
     } else if ($filter == "barang_keluar") {
-      $raw2 = $raw2 . " AND transaksi_barang.jenis = 'keluar' ";
+      $query2->where('transaksi_barang.jenis', 'keluar');
     }
 
-    $raw2 = $raw2 . "AND transaksi_barang.tanggal_transaksi BETWEEN '$from' AND '$to'
-        ";
-
-    $data2 = DB::select($raw2);
+    $query2->whereBetween('transaksi_barang.tanggal_transaksi', [$from, $to]);
+    $data2 = $query2->get();
     $periode = $from . " - " . $to;
 
     return view('report.report_data', compact('data', 'data2', 'periode', 'no_manager', 'email_manager'));

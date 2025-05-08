@@ -96,12 +96,13 @@
                   </div>
                 </div>
               </div>
-              <table id="tableBarang" class="table table-borderless datatable">
+              <table id="tableBarang" class="table table-borderless datatable text-center">
                 <thead>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Nama Barang</th>
                   <th scope="col">Jenis Barang</th>
+                  <th scope="col">Status</th>
                   <th scope="col">Satuan</th>
                   <th scope="col">Stock</th>
                 </tr>
@@ -111,7 +112,14 @@
                   <tr>
                     <th scope="row"><a href="#">{{ $item->id }}</a></th>
                     <td>{{ $item->nama_barang }}</td>
-                    <td><a href="#" class="">{{ $item->nama_konversi }}</a></td>
+                    <td><a href="#" class="">{{ $item->jenis_barang }}</a></td>
+                    <td>
+                      @if($item->show == 1)
+                        <span class="badge badge-success ">Masih Berlaku</span>
+                      @else
+                        <span class="badge badge-danger">Kadaluarsa</span>
+                      @endif
+                    </td>
                     <td>{{ $item->satuan->name }}</td>
                     <td><span class="">{{ $item->stock }}</span></td>
                   </tr>

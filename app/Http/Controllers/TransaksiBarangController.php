@@ -53,7 +53,7 @@ class TransaksiBarangController extends Controller
                 $file->move($path,$nama_file);
                 $data->foto = $nama_file;
         }
-        $data->tanggal_transaksi = $request->tanggal_transaksi;
+        $data->tanggal_transaksi = Carbon::parse($request->transaksi_barang)->toDateTimeString();
         $data->save();
         return redirect()->route('transaksi_barang')->with('success', "Data TransaksiBarang Berhasil Ditambahkan !");
     }
